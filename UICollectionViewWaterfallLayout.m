@@ -187,3 +187,15 @@
 }
 
 @end
+
+@implementation UIWaterFallCollectionView
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (ABS(self.bounds.size.width - widthEdge_) > 0.1f) {
+        widthEdge_ = self.bounds.size.width;
+        [self reloadData];
+    }
+}
+
+@end

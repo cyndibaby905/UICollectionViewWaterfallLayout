@@ -29,3 +29,10 @@
 @property (nonatomic, assign) CGFloat columnPadding;
 @property (nonatomic, assign) CGFloat cellPadding;
 @end
+
+
+@interface UIWaterFallCollectionView : UICollectionView {
+    CGFloat widthEdge_;
+}
+
+@end

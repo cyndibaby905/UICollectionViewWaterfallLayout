@@ -24,7 +24,7 @@
         layout.cellPadding = 5.f;
         layout.delegate = self;
 
-        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView = [[UIWaterFallCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         _collectionView.dataSource = layout;
         _collectionView.delegate = layout;
@@ -58,7 +58,6 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     //UICollectionViewWaterfallLayout *layout = (UICollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout;
-    [self.collectionView reloadData];
 }
 
 
