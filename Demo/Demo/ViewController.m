@@ -20,15 +20,14 @@
 {
     if (!_collectionView) {
         UICollectionViewWaterfallLayout *layout = [[UICollectionViewWaterfallLayout alloc] init];
-        layout.itemWidth = CELL_WIDTH;
-        layout.columnCount = self.view.bounds.size.width / CELL_WIDTH;
-        layout.sectionInset = UIEdgeInsetsMake(9, 9, 9, 9);
+        layout.columnPadding = 5.f;
+        layout.cellPadding = 5.f;
         layout.delegate = self;
 
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        _collectionView.dataSource = self;
-        _collectionView.delegate = self;
+        _collectionView.dataSource = layout;
+        _collectionView.delegate = layout;
         _collectionView.backgroundColor = [UIColor blackColor];
         [_collectionView registerClass:[UICollectionViewWaterfallCell class]
             forCellWithReuseIdentifier:CELL_IDENTIFIER];
@@ -58,39 +57,44 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    UICollectionViewWaterfallLayout *layout = (UICollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout;
-    layout.columnCount = self.collectionView.bounds.size.width / CELL_WIDTH;
-    layout.itemWidth = CELL_WIDTH;
+    //UICollectionViewWaterfallLayout *layout = (UICollectionViewWaterfallLayout *)self.collectionView.collectionViewLayout;
+    [self.collectionView reloadData];
 }
 
-#pragma mark - UICollectionViewDataSource
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+
+
+#pragma mark - UICollectionViewWaterfallLayoutDelegate
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView
+                   layout:(UICollectionViewWaterfallLayout *)collectionViewLayout
+ heightForItemAtIndexPath:(NSUInteger)index {
+    return arc4random()%100*2+100;
+}
+
+- (NSInteger)numberOfColumnsInCollectionView:(UICollectionView *)collectionView
+                                      layout:(UICollectionViewWaterfallLayout *)collectionViewLayout {
+    if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
+        return 4;
+    }
+    else {
+        return 2;
+    }
+
+}
+
+- (NSInteger)numberOfCellsInCollectionView:(UICollectionView *)collectionView
+                                    layout:(UICollectionViewWaterfallLayout *)collectionViewLayout {
     return CELL_COUNT;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
-                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewWaterfallLayout *)collectionViewLayout cellAtIndex:(NSInteger)index {
     UICollectionViewWaterfallCell *cell =
     (UICollectionViewWaterfallCell *)[collectionView dequeueReusableCellWithReuseIdentifier:CELL_IDENTIFIER
-                                                                               forIndexPath:indexPath];
-
-    cell.displayString = [NSString stringWithFormat:@"%d", indexPath.row];
+                                                                               forIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    
+    cell.displayString = [NSString stringWithFormat:@"%d", index];
     return cell;
-}
-
-#pragma mark - UICollectionViewWaterfallLayoutDelegate
-- (CGFloat)collectionView:(UICollectionView *)collectionView
-                   layout:(UICollectionViewWaterfallLayout *)collectionViewLayout
- heightForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return arc4random()%100*2+100;
 }
 
 @end

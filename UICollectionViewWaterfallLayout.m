@@ -8,45 +8,33 @@
 #import "UICollectionViewWaterfallLayout.h"
 
 @interface UICollectionViewWaterfallLayout()
-@property (nonatomic, assign) NSInteger itemCount;
-@property (nonatomic, assign) CGFloat interitemSpacing;
 @property (nonatomic, strong) NSMutableArray *columnHeights; // height for each column
 @property (nonatomic, strong) NSMutableArray *itemAttributes; // attributes for each item
 @end
 
 @implementation UICollectionViewWaterfallLayout
 
-#pragma mark - Accessors
-- (void)setColumnCount:(NSUInteger)columnCount
+- (void)setColumnPadding:(CGFloat)columnPadding
 {
-    if (_columnCount != columnCount) {
-        _columnCount = columnCount;
+    if (columnPadding != _columnPadding) {
+        _columnPadding = columnPadding;
         [self invalidateLayout];
     }
 }
 
-- (void)setItemWidth:(CGFloat)itemWidth
+- (void)setCellPadding:(CGFloat)cellPadding
 {
-    if (_itemWidth != itemWidth) {
-        _itemWidth = itemWidth;
+    if (cellPadding != _cellPadding) {
+        _cellPadding = cellPadding;
         [self invalidateLayout];
     }
 }
 
-- (void)setSectionInset:(UIEdgeInsets)sectionInset
-{
-    if (!UIEdgeInsetsEqualToEdgeInsets(_sectionInset, sectionInset)) {
-        _sectionInset = sectionInset;
-        [self invalidateLayout];
-    }
-}
 
 #pragma mark - Init
 - (void)commonInit
 {
-    _columnCount = 2;
-    _itemWidth = 140.0f;
-    _sectionInset = UIEdgeInsetsZero;
+    self.columnPadding = 5.f;
 }
 
 - (id)init
@@ -73,48 +61,58 @@
 {
     [super prepareLayout];
 
-    _itemCount = [[self collectionView] numberOfItemsInSection:0];
+    NSInteger numberOfCells = [self.delegate numberOfCellsInCollectionView:self.collectionView layout:self];
+    NSInteger numberOfColumns = [self.delegate numberOfColumnsInCollectionView:self.collectionView layout:self];
+    
+    CGFloat columnWidth = (self.collectionView.bounds.size.width - (numberOfColumns + 1) * self.columnPadding) / numberOfColumns;
+    
+    
+   
 
-    NSAssert(_columnCount > 1, @"columnCount for UICollectionViewWaterfallLayout should be greater than 1.");
-    CGFloat width = self.collectionView.frame.size.width - _sectionInset.left - _sectionInset.right;
-    _interitemSpacing = floorf((width - _columnCount * _itemWidth) / (_columnCount - 1));
-
-    _itemAttributes = [NSMutableArray arrayWithCapacity:_itemCount];
-    _columnHeights = [NSMutableArray arrayWithCapacity:_columnCount];
-    for (NSInteger idx = 0; idx < _columnCount; idx++) {
-        [_columnHeights addObject:@(_sectionInset.top)];
+    _itemAttributes = [NSMutableArray arrayWithCapacity:numberOfCells];
+    _columnHeights = [NSMutableArray arrayWithCapacity:numberOfColumns];
+    
+    
+    
+    for (NSInteger idx = 0; idx < numberOfColumns; idx++) {
+        [_columnHeights addObject:@(self.cellPadding)];
     }
 
     // Item will be put into shortest column.
-    for (NSInteger idx = 0; idx < _itemCount; idx++) {
+    for (NSInteger idx = 0; idx < numberOfCells; idx++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:idx inSection:0];
+        
         CGFloat itemHeight = [self.delegate collectionView:self.collectionView
                                                     layout:self
-                                  heightForItemAtIndexPath:indexPath];
+                                  heightForItemAtIndexPath:idx];
+        
+        
+        
         NSUInteger columnIndex = [self shortestColumnIndex];
-        CGFloat xOffset = _sectionInset.left + (_itemWidth + _interitemSpacing) * columnIndex;
+        CGFloat xOffset = self.columnPadding + (columnWidth + self.columnPadding) * columnIndex;
         CGFloat yOffset = [(_columnHeights[columnIndex]) floatValue];
-        CGPoint itemCenter = CGPointMake(floorf(xOffset + _itemWidth/2), floorf((yOffset + itemHeight/2)));
+        CGPoint itemCenter = CGPointMake(floorf(xOffset + columnWidth/2), floorf((yOffset + itemHeight/2)));
 
         UICollectionViewLayoutAttributes *attributes =
         [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-        attributes.size = CGSizeMake(self.itemWidth, itemHeight);
+        attributes.size = CGSizeMake(columnWidth, itemHeight);
         attributes.center = itemCenter;
         [_itemAttributes addObject:attributes];
-        _columnHeights[columnIndex] = @(yOffset + itemHeight + _interitemSpacing);
+        
+        _columnHeights[columnIndex] = @(yOffset + itemHeight + self.cellPadding);
     }
 }
 
 - (CGSize)collectionViewContentSize
 {
-    if (self.itemCount == 0) {
+    if (![self.delegate numberOfCellsInCollectionView:self.collectionView layout:self]) {
         return CGSizeZero;
     }
 
     CGSize contentSize = self.collectionView.frame.size;
     NSUInteger columnIndex = [self longestColumnIndex];
     CGFloat height = [self.columnHeights[columnIndex] floatValue];
-    contentSize.height = height - self.interitemSpacing + self.sectionInset.bottom;
+    contentSize.height = height;
     return contentSize;
 }
 
@@ -172,6 +170,20 @@
     }];
 
     return index;
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [self.delegate numberOfCellsInCollectionView:collectionView layout:self];
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.delegate collectionView:collectionView layout:self cellAtIndex:indexPath.row];
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
 }
 
 @end
