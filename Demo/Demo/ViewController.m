@@ -19,15 +19,9 @@
 - (UICollectionView *)collectionView
 {
     if (!_collectionView) {
-        UICollectionViewWaterfallLayout *layout = [[UICollectionViewWaterfallLayout alloc] init];
-        layout.columnPadding = 5.f;
-        layout.cellPadding = 5.f;
-        layout.delegate = self;
-
-        _collectionView = [[UIWaterFallCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView = [[UIWaterFallCollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:[[UICollectionViewWaterfallLayout alloc] init]];
+        [(UICollectionViewWaterfallLayout*)_collectionView.collectionViewLayout setDelegate:self];
         _collectionView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        _collectionView.dataSource = layout;
-        _collectionView.delegate = layout;
         _collectionView.backgroundColor = [UIColor blackColor];
         [_collectionView registerClass:[UICollectionViewWaterfallCell class]
             forCellWithReuseIdentifier:CELL_IDENTIFIER];

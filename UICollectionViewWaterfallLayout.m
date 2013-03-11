@@ -190,6 +190,21 @@
 
 @implementation UIWaterFallCollectionView
 
+- (id)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout {
+    self = [super initWithFrame:frame collectionViewLayout:layout];
+    if (self) {
+        if ([layout isKindOfClass:[UICollectionViewWaterfallLayout class]]) {
+            UICollectionViewWaterfallLayout * tempLayout = (UICollectionViewWaterfallLayout*)layout;
+            tempLayout.columnPadding = 5.f;
+            tempLayout.cellPadding = 5.f;
+            self.delegate = tempLayout;
+            self.dataSource = tempLayout;
+        }
+    }
+    return self;
+}
+
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (ABS(self.bounds.size.width - widthEdge_) > 0.1f) {
