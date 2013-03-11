@@ -14,18 +14,9 @@
 
 @implementation UICollectionViewWaterfallLayout
 
-- (void)setColumnPadding:(CGFloat)columnPadding
-{
-    if (columnPadding != _columnPadding) {
-        _columnPadding = columnPadding;
-        [self invalidateLayout];
-    }
-}
-
-- (void)setCellPadding:(CGFloat)cellPadding
-{
-    if (cellPadding != _cellPadding) {
-        _cellPadding = cellPadding;
+- (void)setPaddingSize:(CGSize)paddingSize {
+    if (!CGSizeEqualToSize(paddingSize, _paddingSize)) {
+        _paddingSize = paddingSize;
         [self invalidateLayout];
     }
 }
@@ -34,7 +25,7 @@
 #pragma mark - Init
 - (void)commonInit
 {
-    self.columnPadding = 5.f;
+    self.paddingSize = CGSizeMake(5.f, 5.f);
 }
 
 - (id)init
@@ -64,7 +55,7 @@
     NSInteger numberOfCells = [self.delegate numberOfCellsInCollectionView:self.collectionView layout:self];
     NSInteger numberOfColumns = [self.delegate numberOfColumnsInCollectionView:self.collectionView layout:self];
     
-    CGFloat columnWidth = (self.collectionView.bounds.size.width - (numberOfColumns + 1) * self.columnPadding) / numberOfColumns;
+    CGFloat columnWidth = (self.collectionView.bounds.size.width - (numberOfColumns + 1) * self.paddingSize.width) / numberOfColumns;
     
     
    
@@ -75,7 +66,7 @@
     
     
     for (NSInteger idx = 0; idx < numberOfColumns; idx++) {
-        [_columnHeights addObject:@(self.cellPadding)];
+        [_columnHeights addObject:@(self.paddingSize.height)];
     }
 
     // Item will be put into shortest column.
@@ -89,7 +80,7 @@
         
         
         NSUInteger columnIndex = [self shortestColumnIndex];
-        CGFloat xOffset = self.columnPadding + (columnWidth + self.columnPadding) * columnIndex;
+        CGFloat xOffset = self.paddingSize.width + (columnWidth + self.paddingSize.width) * columnIndex;
         CGFloat yOffset = [(_columnHeights[columnIndex]) floatValue];
         CGPoint itemCenter = CGPointMake(floorf(xOffset + columnWidth/2), floorf((yOffset + itemHeight/2)));
 
@@ -99,7 +90,7 @@
         attributes.center = itemCenter;
         [_itemAttributes addObject:attributes];
         
-        _columnHeights[columnIndex] = @(yOffset + itemHeight + self.cellPadding);
+        _columnHeights[columnIndex] = @(yOffset + itemHeight + self.paddingSize.height);
     }
 }
 
@@ -195,8 +186,7 @@
     if (self) {
         if ([layout isKindOfClass:[UICollectionViewWaterfallLayout class]]) {
             UICollectionViewWaterfallLayout * tempLayout = (UICollectionViewWaterfallLayout*)layout;
-            tempLayout.columnPadding = 5.f;
-            tempLayout.cellPadding = 5.f;
+            tempLayout.paddingSize = CGSizeMake(5.f, 5.f);
             self.delegate = tempLayout;
             self.dataSource = tempLayout;
         }

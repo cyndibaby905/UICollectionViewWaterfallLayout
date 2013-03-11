@@ -21,6 +21,8 @@
 		526109E416646F4D005E4B6E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 526109E316646F4D005E4B6E /* ViewController.m */; };
 		526109F01664709D005E4B6E /* UICollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 526109EF1664709D005E4B6E /* UICollectionViewWaterfallLayout.m */; };
 		526109F31664740B005E4B6E /* UICollectionViewWaterfallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 526109F21664740B005E4B6E /* UICollectionViewWaterfallCell.m */; };
+		774D504C16ED9CAD0044D60A /* UICollectionViewJustifiedLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 774D504B16ED9CAB0044D60A /* UICollectionViewJustifiedLayout.m */; };
+		774D504F16EDA71A0044D60A /* JustifiedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 774D504E16EDA7190044D60A /* JustifiedViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +47,10 @@
 		526109EF1664709D005E4B6E /* UICollectionViewWaterfallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICollectionViewWaterfallLayout.m; path = ../../UICollectionViewWaterfallLayout.m; sourceTree = "<group>"; };
 		526109F11664740B005E4B6E /* UICollectionViewWaterfallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewWaterfallCell.h; sourceTree = "<group>"; };
 		526109F21664740B005E4B6E /* UICollectionViewWaterfallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewWaterfallCell.m; sourceTree = "<group>"; };
+		774D504A16ED9CAB0044D60A /* UICollectionViewJustifiedLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICollectionViewJustifiedLayout.h; sourceTree = "<group>"; };
+		774D504B16ED9CAB0044D60A /* UICollectionViewJustifiedLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICollectionViewJustifiedLayout.m; sourceTree = "<group>"; };
+		774D504D16EDA7180044D60A /* JustifiedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JustifiedViewController.h; sourceTree = "<group>"; };
+		774D504E16EDA7190044D60A /* JustifiedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JustifiedViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +97,8 @@
 		526109CA16646F4D005E4B6E /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				774D504D16EDA7180044D60A /* JustifiedViewController.h */,
+				774D504E16EDA7190044D60A /* JustifiedViewController.m */,
 				526109D316646F4D005E4B6E /* AppDelegate.h */,
 				526109D416646F4D005E4B6E /* AppDelegate.m */,
 				526109EE1664709D005E4B6E /* UICollectionViewWaterfallLayout.h */,
@@ -102,6 +110,8 @@
 				526109E216646F4D005E4B6E /* ViewController.h */,
 				526109E316646F4D005E4B6E /* ViewController.m */,
 				526109CB16646F4D005E4B6E /* Supporting Files */,
+				774D504A16ED9CAB0044D60A /* UICollectionViewJustifiedLayout.h */,
+				774D504B16ED9CAB0044D60A /* UICollectionViewJustifiedLayout.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -192,6 +202,8 @@
 				526109E416646F4D005E4B6E /* ViewController.m in Sources */,
 				526109F01664709D005E4B6E /* UICollectionViewWaterfallLayout.m in Sources */,
 				526109F31664740B005E4B6E /* UICollectionViewWaterfallCell.m in Sources */,
+				774D504C16ED9CAD0044D60A /* UICollectionViewJustifiedLayout.m in Sources */,
+				774D504F16EDA71A0044D60A /* JustifiedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

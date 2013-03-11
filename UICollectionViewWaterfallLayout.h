@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 
 @class UICollectionViewWaterfallLayout;
-@protocol UICollecitonViewDelegateWaterfallLayout <UICollectionViewDelegate>
+@protocol UICollecitonViewWaterfallLayoutDelegate <UICollectionViewDelegate>
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewWaterfallLayout *)collectionViewLayout
  heightForItemAtIndexPath:(NSUInteger)index;
@@ -24,10 +24,8 @@
 @end
 
 @interface UICollectionViewWaterfallLayout : UICollectionViewLayout<UICollectionViewDataSource, UICollectionViewDelegate>
-@property (nonatomic, weak) id<UICollecitonViewDelegateWaterfallLayout> delegate;
-
-@property (nonatomic, assign) CGFloat columnPadding;
-@property (nonatomic, assign) CGFloat cellPadding;
+@property (nonatomic, weak) id<UICollecitonViewWaterfallLayoutDelegate> delegate;
+@property (nonatomic, assign) CGSize paddingSize;
 @end
 
 
